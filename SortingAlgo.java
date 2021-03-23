@@ -1,15 +1,45 @@
 public class SortingAlgo {
     private int[] arr;
     private int size;
+    private long time;
+    private long compare;
 
-    SortingAlgo(int[] arr){
+    public void setArr(int[] arr) {
         this.arr = arr;
-        this.size = arr.length;   
+        this.size = arr.length;
     }
 
-    public int[] insertionSort(){
+
+    public long getTime(){
+        return this.time;
+    }
+
+    public long getCompare(){
+        return this.compare;
+    }
+
+    public int[] returnMergeSort(){
+        this.compare = 0;
+        long startTime = System.nanoTime();
+        mergeSort(this.arr, this.size);
+        long endTime = System.nanoTime();
+        this.time = endTime - startTime;
+        return this.arr;
+    }
+
+    public int[] returnInsertionSort(){
+        this.compare = 0;
+        long startTime = System.nanoTime();
+        insertionSort();
+        long endTime = System.nanoTime();
+        this.time = endTime - startTime;
+        return this.arr;
+    }
+
+    private int[] insertionSort(){
         for(int i =1;i<this.size;i++){
             for(int j=i;j>0;j--){
+                this.compare += 1;
                 if(this.arr[j] < this.arr[j-1])
                     swap(j,j-1);
                 else
@@ -26,12 +56,7 @@ public class SortingAlgo {
         this.arr[b] = temp;
     }
 
-    public int[] returnMergeSort(){
-        mergeSort(this.arr, this.size);
-        return this.arr;
-    }
-
-    private static void mergeSort(int[] a, int n) {
+    private void mergeSort(int[] a, int n) {
         if (n < 2) {
             return;
         }
@@ -48,10 +73,12 @@ public class SortingAlgo {
         merge(a, l, r, mid, n - mid);
     }
 
-    private static void merge(int[] a, int[] l, int[] r, int left, int right) {
+    private void merge(int[] a, int[] l, int[] r, int left, int right) {
        
           int i = 0, j = 0, k = 0;
           while (i < left && j < right) {
+              //1 comparism
+              this.compare += 1;
               if (l[i] <= r[j]) {
                   a[k++] = l[i++];
               }
